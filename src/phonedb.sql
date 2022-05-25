@@ -3,10 +3,11 @@ create user phonedb password 'phonedb';
 create database phonedb;
 alter database phonedb owner to phoendb;
 
-
-
 -- person 테이블 삭제
 drop table person;
+
+-- person 시퀸스 삭제
+drop sequence seq_person_id;
 
 -- person 테이블 생성
 create table person(
