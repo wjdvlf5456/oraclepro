@@ -37,7 +37,6 @@ public class PhoneApp {
 			} else if (active == 1) {
 				System.out.println("<1.리스트>");
 				phoneDao.personSelect();
-				break;
 				// ------------ 2.등록 ------------
 			} else if (active == 2) {
 				System.out.println("<2.등록>");
