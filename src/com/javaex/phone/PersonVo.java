@@ -60,6 +60,11 @@ public class PersonVo {
 	}
 
 	// 메소드 - 일반
+	public void showList() {
+		System.out.println(personId + "\t" + name + "\t" + hp + "\t" + company);
+		
+	}
+	
 	@Override
 	public String toString() {
 		return "PersonVo [personId=" + personId + ", name=" + name + ", hp=" + hp + ", company=" + company + "]";

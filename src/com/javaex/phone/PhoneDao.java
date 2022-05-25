@@ -119,7 +119,6 @@ public class PhoneDao {
 			rs = pstmt.executeQuery();
 
 			// 결과처리
-
 			// 반복문으로 Vo만들어 List에 추가하기
 			while (rs.next()) {
 				int personId = rs.getInt("person_id");
@@ -130,6 +129,11 @@ public class PhoneDao {
 				PersonVo personVo = new PersonVo(personId, name, hp, company);
 
 				personList.add(personVo);
+
+			}
+
+			for (int i = 0; i < personList.size(); i++) {
+				personList.get(i).showList();
 			}
 
 		} catch (SQLException e) {
@@ -154,16 +158,16 @@ public class PhoneDao {
 			String query = "";
 			query += " update person ";
 			query += " set name = ?, ";
-			query += "     hp = ? ";
+			query += "     hp = ?, ";
 			query += "     company = ? ";
 			query += " where person_id = ? ";
-			System.out.println(query);
 
 			// 바인딩
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, personVo.getName());
 			pstmt.setString(2, personVo.getHp());
 			pstmt.setString(3, personVo.getCompany());
+			pstmt.setInt(4, personVo.getPersonId());
 
 			// 실행
 			count = pstmt.executeUpdate();
@@ -204,6 +208,50 @@ public class PhoneDao {
 
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
+		}
+		close();
+
+		return count;
+
+	}
+
+	public int personSearch(String search) {
+
+		int count = -1;
+		getConnection();
+		try {
+			// SQL문 준비
+			String query = "";
+			query += " select * ";
+			query += " from person ";
+			query += " where name Like ? ";
+			query += " or hp like ? ";
+			query += " or company like ? ";
+
+			// 바인딩
+			pstmt = conn.prepareStatement(query);
+
+			search = "%" + search + "%";
+			pstmt.setString(1, search);
+			pstmt.setString(2, search);
+			pstmt.setString(3, search);
+
+			// 실행
+			// resultSet 가져오기
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				int personId = rs.getInt("person_id");
+				String name = rs.getString("name");
+				String hp = rs.getString("hp");
+				String company = rs.getString("company");
+
+				PersonVo personVo = new PersonVo(personId, name, hp, company);
+				personVo.showList();
+			}
+
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
 		}
 		close();
 

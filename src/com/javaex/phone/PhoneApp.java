@@ -1,7 +1,5 @@
 package com.javaex.phone;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Scanner;
 
 public class PhoneApp {
@@ -13,24 +11,23 @@ public class PhoneApp {
 		PhoneDao phoneDao = new PhoneDao();
 
 		// 프로그램 시작
-		System.out.println("*******************************************");
-		System.out.println("*         전화번호 관리 프로그램          *");
-		System.out.println("*******************************************");
+		System.out.println("***********************************************");
+		System.out.println("*           전화번호 관리 프로그램            *");
+		System.out.println("***********************************************");
 
 		while (true) {
 
 			System.out.println("");
-			System.out.println("1.리스트  2.등록  3.삭제  4.검색  5.종료");
-			System.out.println("-------------------------------------------");
+			System.out.println("1.리스트  2.등록  3.수정  4.삭제  5.검색  6.종료");
+			System.out.println("------------------------------------------------");
 			System.out.print("<메뉴번호: ");
-			int contents = sc.nextInt();
-			int active = contents;
+			int active = sc.nextInt();
 
 			// ---------6.종료------------
 			if (active == 6) {
-				System.out.println("*******************************************");
-				System.out.println("*                감사합니다               *");
-				System.out.println("*******************************************");
+				System.out.println("***********************************************");
+				System.out.println("*                 감사합니다                  *");
+				System.out.println("***********************************************");
 				break;
 
 				// ------------ 1.리스트 ------------
@@ -41,33 +38,36 @@ public class PhoneApp {
 			} else if (active == 2) {
 				System.out.println("<2.등록>");
 				System.out.print(">이름: ");
-				String name = sc.nextLine();
+				String name = sc.next();
 
-				String hp = sc.nextLine();
 				System.out.print(">휴대전화: ");
+				String hp = sc.next();
 
 				System.out.print(">회사전화: ");
-				String company = sc.nextLine();
+				String company = sc.next();
 				System.out.println("[등록되었습니다.]");
 
 				PersonVo vo = new PersonVo(name, hp, company);
 				phoneDao.personinsert(vo);
-				
+
 				// ------------ 3.수정 ------------
-				System.out.println("<3.등록>");
+			} else if (active == 3) {
+				System.out.println("<3.수정>");
+				System.out.print(">번호: ");
+				int upId = sc.nextInt();
+
 				System.out.print(">이름: ");
-				String upName = sc.nextLine();
-				
-				String upHp = sc.nextLine();
+				String upName = sc.next();
+
 				System.out.print(">휴대전화: ");
-				
+				String upHp = sc.next();
+
 				System.out.print(">회사전화: ");
-				String upCompany = sc.nextLine();
-				System.out.println("[등록되었습니다.]");
-				
-				PersonVo upVo = new PersonVo(upName, upHp, upCompany);
-				phoneDao.personinsert(upVo);
-				
+				String upCompany = sc.next();
+				System.out.println("[수정되었습니다.]");
+
+				PersonVo upVo = new PersonVo(upId, upName, upHp, upCompany);
+				phoneDao.personUpdate(upVo);
 
 				// ------------ 4.삭제 ------------
 			} else if (active == 4) {
@@ -79,28 +79,17 @@ public class PhoneApp {
 				// ------------ 5.검색 ------------
 			} else if (active == 5) {
 				System.out.println("<5.검색>");
-				System.out.print(">이름: ");
-				String search = sc.nextLine();
-				char cSearch = search.charAt(0);
+				System.out.print(">검색어: ");
+				String search = sc.next();
+				phoneDao.personSearch(search);
 
 				// ------------ 재입력 ------------
 			} else {
 				System.out.println("[다시 입력해 주세요]");
 			}
-			sc.close();
-		}
-
-	}
-
-	// 실시간으로 반영하기 위한 전역변수
-	public static void change(List<PersonVo> fList) throws IOException {
-		Scanner sc = new Scanner(System.in);
-
-		for (PersonVo person : fList) {
-			String savestr = person.getName() + "," + person.getHp() + "," + person.getCompany();
-
 		}
 		sc.close();
+
 	}
 
 }
